@@ -8,8 +8,8 @@
 <style>
 body {
     margin: 0;
-    font-family: 'Trebuchet MS', sans-serif;
-    background: url('https://images.unsplash.com/photo-1520975922284-7c5f8d7c8c2c?auto=format&fit=crop&w=1400&q=80');
+    font-family: Arial, sans-serif;
+    background: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80');
     background-size: cover;
     color: white;
 }
@@ -17,62 +17,63 @@ body {
 header {
     text-align: center;
     padding: 20px;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.7);
     font-size: 28px;
-    font-weight: bold;
-    letter-spacing: 2px;
 }
 
 .board {
     display: grid;
-    grid-template-columns: repeat(6, 80px);
-    grid-template-rows: repeat(6, 80px);
-    gap: 5px;
+    grid-template-columns: repeat(6, 90px);
+    grid-template-rows: repeat(6, 90px);
+    gap: 4px;
     justify-content: center;
-    margin-top: 30px;
+    margin-top: 25px;
 }
 
 .cell {
-    width: 80px;
-    height: 80px;
-    background: rgba(255,255,255,0.15);
+    width: 90px;
+    height: 90px;
+    border-radius: 10px;
     border: 1px solid rgba(255,255,255,0.3);
+    background-size: cover;
+    background-position: center;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
-    text-align: center;
-    border-radius: 8px;
+    position: relative;
 }
+
+/* tipos de terreno */
+.grass { background-image: url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=300&q=80'); }
+.forest { background-image: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=300&q=80'); }
+.stone { background-image: url('https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?auto=format&fit=crop&w=300&q=80'); }
 
 .player {
     font-size: 10px;
-    padding: 3px;
-    border-radius: 5px;
-    background: rgba(0,0,0,0.6);
+    padding: 4px;
+    border-radius: 6px;
+    background: rgba(0,0,0,0.7);
 }
 
 .controls {
     text-align: center;
-    margin-top: 25px;
+    margin-top: 20px;
 }
 
 button {
     padding: 10px 20px;
     font-size: 16px;
     border: none;
-    cursor: pointer;
     border-radius: 8px;
     background: gold;
-    color: black;
+    cursor: pointer;
     font-weight: bold;
 }
 
 #log {
     margin-top: 15px;
     text-align: center;
-    font-size: 18px;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.6);
     padding: 10px;
 }
 </style>
@@ -90,7 +91,7 @@ button {
     <button onclick="rollDice()">🎲 Jogar Dado</button>
 </div>
 
-<div id="log">Clique para começar a jornada!</div>
+<div id="log">Iniciando aventura...</div>
 
 <script>
 const players = [
@@ -102,10 +103,15 @@ const players = [
 const board = document.getElementById("board");
 const log = document.getElementById("log");
 
-// criar tabuleiro
+// criar tabuleiro com tipos diferentes
 for (let i = 0; i < 36; i++) {
     let cell = document.createElement("div");
     cell.classList.add("cell");
+
+    if (i % 3 === 0) cell.classList.add("forest");
+    else if (i % 3 === 1) cell.classList.add("grass");
+    else cell.classList.add("stone");
+
     cell.id = "cell-" + i;
     board.appendChild(cell);
 }
@@ -115,25 +121,25 @@ function render() {
 
     players.forEach(p => {
         let cell = document.getElementById("cell-" + p.pos);
+
         if (cell) {
             let div = document.createElement("div");
             div.classList.add("player");
-            div.style.background = p.color;
-            div.innerText = p.name;
+            div.style.color = p.color;
+            div.innerText = "🦉 " + p.name;
             cell.appendChild(div);
         }
     });
 }
 
 function rollDice() {
-    let current = players[Math.floor(Math.random() * players.length)];
+    let p = players[Math.floor(Math.random() * players.length)];
     let roll = Math.floor(Math.random() * 6) + 1;
 
-    current.pos += roll;
-    if (current.pos >= 35) current.pos = 35;
+    p.pos += roll;
+    if (p.pos > 35) p.pos = 35;
 
-    log.innerText = `${current.name} andou ${roll} casas!`;
-
+    log.innerText = `${p.name} andou ${roll} casas!`;
     render();
 }
 
