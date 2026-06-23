@@ -149,13 +149,19 @@ var player;
 function onYouTubeIframeAPIReady(){
 
 player = new YT.Player('player',{
-height:'0',
-width:'0',
-videoId:'IRZIMGxxgf8',
-playerVars:{
-autoplay:0,
-controls:0
-}
+    height:'1',
+    width:'1',
+    videoId:'IRZIMGxxgf8',
+    playerVars:{
+        autoplay:0,
+        controls:0,
+        rel:0
+    },
+    events:{
+        onReady:function(event){
+            window.player = event.target;
+        }
+    }
 });
 
 }
@@ -190,8 +196,17 @@ foto.style.display = "block";
 foto.classList.add("girando");
 
 if(player){
-player.playVideo();
-}
+
+    player.unMute();
+
+    player.setVolume(100);
+
+    player.playVideo()
+    .catch(() => {
+        console.log("Autoplay bloqueado");
+    });
+
+    }
 
 const frases = [
 "RIAN CABURÉ DO JORDÃO",
