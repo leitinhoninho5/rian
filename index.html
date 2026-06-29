@@ -1,150 +1,159 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Caminhada dos Caburés</title>
-
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80');
-    background-size: cover;
-    color: white;
+<title>Para Aylla ❤️</title><style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-header {
-    text-align: center;
-    padding: 20px;
-    background: rgba(0,0,0,0.7);
-    font-size: 28px;
+body{
+    background:linear-gradient(180deg,#ff9ec4,#ff6fa8,#ff4d88);
+    font-family:Georgia,serif;
+    overflow:hidden;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
 }
 
-.board {
-    display: grid;
-    grid-template-columns: repeat(6, 90px);
-    grid-template-rows: repeat(6, 90px);
-    gap: 4px;
-    justify-content: center;
-    margin-top: 25px;
+.container{
+    text-align:center;
+    max-width:800px;
+    padding:30px;
 }
 
-.cell {
-    width: 90px;
-    height: 90px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.3);
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
+button{
+    padding:18px 40px;
+    border:none;
+    border-radius:50px;
+    background:white;
+    color:#ff4d88;
+    font-size:22px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 0 20px rgba(255,255,255,.5);
 }
 
-/* tipos de terreno */
-.grass { background-image: url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=300&q=80'); }
-.forest { background-image: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=300&q=80'); }
-.stone { background-image: url('https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?auto=format&fit=crop&w=300&q=80'); }
-
-.player {
-    font-size: 10px;
-    padding: 4px;
-    border-radius: 6px;
-    background: rgba(0,0,0,0.7);
+button:hover{
+    transform:scale(1.05);
 }
 
-.controls {
-    text-align: center;
-    margin-top: 20px;
+#carta{
+    display:none;
+    background:rgba(255,255,255,.15);
+    backdrop-filter:blur(10px);
+    padding:30px;
+    border-radius:20px;
+    margin-top:20px;
+    line-height:1.8;
+    font-size:20px;
+    box-shadow:0 0 25px rgba(0,0,0,.2);
 }
 
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    background: gold;
-    cursor: pointer;
-    font-weight: bold;
+.coracao{
+    position:fixed;
+    font-size:30px;
+    animation:subir 6s linear infinite;
+    pointer-events:none;
 }
 
-#log {
-    margin-top: 15px;
-    text-align: center;
-    background: rgba(0,0,0,0.6);
-    padding: 10px;
+@keyframes subir{
+    from{
+        transform:translateY(100vh);
+        opacity:1;
+    }
+    to{
+        transform:translateY(-100px);
+        opacity:0;
+    }
 }
-</style>
-</head>
+</style></head>
+<body><div class="container"><h1>❤️ Para Aylla ❤️</h1>
+<br>
 
-<body>
+<button onclick="abrir()">
+    Clique aqui 💌
+</button>
 
-<header>
-🦉 Caminhada dos Caburés 🦉
-</header>
+<div id="carta"></div>
 
-<div class="board" id="board"></div>
+</div><div id="player"></div><script src="https://www.youtube.com/iframe_api"></script><script>
 
-<div class="controls">
-    <button onclick="rollDice()">🎲 Jogar Dado</button>
-</div>
+var player;
 
-<div id="log">Iniciando aventura...</div>
+function onYouTubeIframeAPIReady(){
 
-<script>
-const players = [
-    { name: "Vandson Primata Jr", pos: 0, color: "lightblue" },
-    { name: "Jair Femboy", pos: 0, color: "pink" },
-    { name: "Rian Caburé", pos: 0, color: "lightgreen" }
-];
-
-const board = document.getElementById("board");
-const log = document.getElementById("log");
-
-// criar tabuleiro com tipos diferentes
-for (let i = 0; i < 36; i++) {
-    let cell = document.createElement("div");
-    cell.classList.add("cell");
-
-    if (i % 3 === 0) cell.classList.add("forest");
-    else if (i % 3 === 1) cell.classList.add("grass");
-    else cell.classList.add("stone");
-
-    cell.id = "cell-" + i;
-    board.appendChild(cell);
-}
-
-function render() {
-    document.querySelectorAll(".cell").forEach(c => c.innerHTML = "");
-
-    players.forEach(p => {
-        let cell = document.getElementById("cell-" + p.pos);
-
-        if (cell) {
-            let div = document.createElement("div");
-            div.classList.add("player");
-            div.style.color = p.color;
-            div.innerText = "🦉 " + p.name;
-            cell.appendChild(div);
-        }
+    player = new YT.Player('player',{
+        height:'0',
+        width:'0',
+        videoId:'kPa7bsKwL-c'
     });
+
 }
 
-function rollDice() {
-    let p = players[Math.floor(Math.random() * players.length)];
-    let roll = Math.floor(Math.random() * 6) + 1;
+const texto = `
+Feliz 3 meses de namoro minha linda, primeiramente eu quero te agradecer por tudo minha bebêzona.
 
-    p.pos += roll;
-    if (p.pos > 35) p.pos = 35;
+Obrigado por ser tão especial pra mim e fazer todos os meus dias felizes.
 
-    log.innerText = `${p.name} andou ${roll} casas!`;
-    render();
+Eu sempre lembro de cada momento com você, aí na frente da sua casa, na rua, assistindo, conversando, rindo. Qualquer momento com você se torna especial e sempre vai estar guardado no meu coração.
+
+Mesmo com desentendimentos ou coisas bestas que acontecem 🙄 eu prometo sempre amar você independente de tudo.
+
+Você faz meus dias felizes, me salva todos os dias, me faz querer ser uma pessoa melhor.
+
+Quando eu olho pro seu sorriso, seu jeitinho, seus olhos, sua risada, tudo, tudo, tudo mesmo me deixa cada vez mais apaixonado por você, meu amor.
+
+EU TE AMOOOOOO 🩷🌹
+`;
+
+function abrir(){
+
+    document.querySelector("button").style.display="none";
+
+    const carta = document.getElementById("carta");
+    carta.style.display="block";
+
+    if(player){
+        player.playVideo();
+    }
+
+    let i = 0;
+
+    function escrever(){
+
+        if(i < texto.length){
+            carta.innerHTML += texto.charAt(i);
+            i++;
+            setTimeout(escrever,40);
+        }
+
+    }
+
+    escrever();
+
+    setInterval(criarCoracao,300);
 }
 
-render();
-</script>
+function criarCoracao(){
 
-</body>
+    const c = document.createElement("div");
+
+    c.className = "coracao";
+    c.innerHTML = "❤️";
+
+    c.style.left = Math.random()*100 + "vw";
+
+    document.body.appendChild(c);
+
+    setTimeout(()=>{
+        c.remove();
+    },6000);
+}
+
+</script></body>
 </html>
